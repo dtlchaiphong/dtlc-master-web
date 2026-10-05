@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ Thống Quản Lý Tập Trung</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+    body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: #f0f2f5; }
+    
+    /* Thanh Navigation Tab */
+    .tab-bar { 
+      display: flex; 
+      background: #ffffff; 
+      border-bottom: 2px solid #e4e6eb; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 14px 22px; 
+      border: none; 
+      background: none; 
+      font-size: 14px; 
+      font-weight: 600;
+      color: #65676b; 
+      cursor: pointer; 
+      transition: all 0.2s ease; 
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: #1877f2; background: #f2f2f2; }
+    .tab-btn.active { color: #1877f2; border-bottom-color: #1877f2; background: #e7f3ff; }
+
+    /* Khu vực hiển thị iFrame */
+    .content-area { flex: 1; position: relative; width: 100%; height: 100%; }
+    .tab-iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      border: none; display: none;
+    }
+    .tab-iframe.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- Thanh Điều Hướng Tab -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('app1', 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin')">LIFT Schedule / Lịch Xe</button>
+    <button class="tab-btn" onclick="switchTab('app2', 'https://script.google.com/macros/s/AKfycbwy5n54KxkULG5wTC5K97ouLa1_fI2PIMZcZSVL444E8j-ffp95DaZkdKF1v-T4xhr1/exec')">TANN Report</button>
+    <button class="tab-btn" onclick="switchTab('app3', 'https://script.google.com/macros/s/AKfycbxuGwttRNWhWft0ku_89g-n_zN9dfR65m5EWw99uAAtQSrJEU4Fcg7hlA7y2UBViMh7/exec')">Quản Lý Công Việc</button>
+  </div>
+
+  <!-- Khu vực chứa 3 iFrame -->
+  <div class="content-area">
+    <!-- App 1 (Lịch xe - Admin) tải sẵn ngay khi mở trang -->
+    <iframe id="app1" class="tab-iframe active" src="https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin"></iframe>
+    <!-- App 2 và App 3 nạp theo cơ chế Lazy Load -->
+    <iframe id="app2" class="tab-iframe"></iframe>
+    <iframe id="app3" class="tab-iframe"></iframe>
+  </div>
+
+  <script>
+    function switchTab(tabId, appUrl) {
+      // 1. Đổi trạng thái hiển thị của Tab
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      // 2. Đổi khung iFrame tương ứng
+      document.querySelectorAll('.tab-iframe').forEach(iframe => iframe.classList.remove('active'));
+      const targetIframe = document.getElementById(tabId);
+      
+      // 3. Lazy Load: Chỉ tải nội dung khi người dùng click vào Tab đó lần đầu
+      if (appUrl && !targetIframe.getAttribute('src')) {
+        targetIframe.setAttribute('src', appUrl);
+      }
+      
+      targetIframe.classList.add('active');
+    }
+  </script>
+</body>
+</html>
