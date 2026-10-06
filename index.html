@@ -17,13 +17,14 @@
       --text-main: #212121;
       --text-sub: #616161;
       --border-color: #e0e0e0;
-      --sidebar-width: 260px;
+      --sidebar-width: 250px;
+      --sidebar-collapsed-width: 64px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { display: flex; height: 100vh; height: 100dvh; overflow: hidden; background: var(--bg-color); color: var(--text-main); }
 
-    /* Overlay phông nền mờ khi mở Sidebar trên Mobile */
+    /* Overlay phông nền mờ cho Mobile */
     .sidebar-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -35,7 +36,7 @@
     }
     .sidebar-overlay.active { display: block; opacity: 1; }
 
-    /* Sidebar Navigation */
+    /* SIDEBAR MASTER */
     aside {
       width: var(--sidebar-width);
       background: #ffffff;
@@ -43,15 +44,23 @@
       display: flex;
       flex-direction: column;
       z-index: 100;
-      transition: transform 0.3s ease;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* Khi Sidebar ở trạng thái Thu gọn (Collapsed) */
+    aside.collapsed {
+      width: var(--sidebar-collapsed-width);
     }
 
     .sidebar-header {
-      padding: 16px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 2px solid var(--primary-red-light);
+      height: 52px;
     }
 
     .brand {
@@ -59,33 +68,47 @@
       align-items: center;
       gap: 10px;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--primary-red);
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .brand-badge {
       background: var(--primary-red);
       color: #ffffff;
-      padding: 2px 6px;
+      padding: 2px 5px;
       border-radius: 4px;
       font-size: 10px;
       font-weight: 700;
-      text-transform: uppercase;
     }
 
-    .close-sidebar-btn {
-      background: none;
-      border: none;
-      font-size: 18px;
+    /* Nút Thu Gọn Sidebar trên Desktop */
+    .toggle-sidebar-btn {
+      background: #f5f5f5;
+      border: 1px solid var(--border-color);
       color: var(--text-sub);
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
       cursor: pointer;
-      display: none; /* Chỉ hiện trên mobile */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .toggle-sidebar-btn:hover { background: var(--primary-red-light); color: var(--primary-red); }
+
+    /* Khi thu gọn, ẩn tên Logo & Badge */
+    aside.collapsed .brand span,
+    aside.collapsed .brand-badge {
+      display: none;
     }
 
-    /* Menu Links trong Sidebar */
+    /* Danh sách Menu */
     .menu-list {
       list-style: none;
-      padding: 12px;
+      padding: 10px 8px;
       display: flex;
       flex-direction: column;
       gap: 6px;
@@ -97,7 +120,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 14px;
+      padding: 10px 12px;
       border-radius: 8px;
       border: none;
       background: transparent;
@@ -107,14 +130,17 @@
       cursor: pointer;
       width: 100%;
       text-align: left;
+      white-space: nowrap;
       transition: all 0.2s ease;
+      position: relative;
     }
 
     .menu-item i {
       font-size: 16px;
-      width: 20px;
+      width: 22px;
       text-align: center;
       color: #757575;
+      flex-shrink: 0;
     }
 
     .menu-item:hover {
@@ -131,9 +157,19 @@
       color: var(--primary-red);
     }
 
-    /* Footer Sidebar (Thao tác Reload/Open) */
+    /* Khi thu gọn, ẩn chữ của Menu Item */
+    aside.collapsed .menu-item span {
+      display: none;
+    }
+
+    aside.collapsed .menu-item {
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    /* Footer Sidebar (Nút Làm mới / Mở tab mới) */
     .sidebar-footer {
-      padding: 12px;
+      padding: 8px;
       border-top: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
@@ -144,24 +180,25 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 12px;
+      padding: 8px 10px;
       border-radius: 6px;
       border: 1px solid var(--border-color);
       background: #ffffff;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-sub);
       cursor: pointer;
       width: 100%;
+      white-space: nowrap;
       transition: all 0.2s ease;
     }
 
-    .action-btn:hover {
-      background: #f5f5f5;
-      color: var(--text-main);
-    }
+    .action-btn:hover { background: #f5f5f5; color: var(--text-main); }
 
-    /* Main Workspace Area */
+    aside.collapsed .action-btn span { display: none; }
+    aside.collapsed .action-btn { justify-content: center; padding: 8px 0; }
+
+    /* WORKSPACE CHÍNH */
     main {
       flex: 1;
       display: flex;
@@ -171,47 +208,44 @@
       background: #ffffff;
     }
 
-    /* Header Thanh Công Cụ Mobile */
+    /* Mobile Header */
     .mobile-header {
-      height: 48px;
+      height: 44px;
       background: #ffffff;
       border-bottom: 1px solid var(--border-color);
-      display: none; /* Mặc định ẩn trên Desktop */
+      display: none;
       align-items: center;
       justify-content: space-between;
-      padding: 0 12px;
+      padding: 0 10px;
     }
 
     .menu-toggle-btn {
       background: none;
       border: none;
-      font-size: 20px;
+      font-size: 18px;
       color: var(--primary-red);
       cursor: pointer;
-      padding: 4px 8px;
+      padding: 4px;
     }
 
     .mobile-title {
       font-weight: 700;
-      font-size: 14.5px;
+      font-size: 14px;
       color: var(--primary-red);
     }
 
-    .mobile-actions {
-      display: flex;
-      gap: 4px;
-    }
+    .mobile-actions { display: flex; gap: 4px; }
 
     .icon-btn-mobile {
       background: none;
       border: none;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--text-sub);
-      padding: 6px;
+      padding: 4px 6px;
       cursor: pointer;
     }
 
-    /* iFrame Display Area */
+    /* iFrame Area */
     .content-area {
       flex: 1;
       position: relative;
@@ -229,11 +263,12 @@
 
     .tab-iframe.active { display: block; }
 
-    /* RESPONSIVE DESIGN CHO MOBILE (< 768px) */
+    /* RESPONSIVE DESIGNS FOR MOBILE */
     @media (max-width: 768px) {
       aside {
         position: fixed;
         top: 0; left: 0; bottom: 0;
+        width: var(--sidebar-width) !important;
         transform: translateX(-100%);
         box-shadow: 4px 0 16px rgba(0,0,0,0.15);
       }
@@ -242,17 +277,29 @@
         transform: translateX(0);
       }
 
-      .close-sidebar-btn { display: block; }
+      aside.collapsed .brand span,
+      aside.collapsed .brand-badge,
+      aside.collapsed .menu-item span,
+      aside.collapsed .action-btn span {
+        display: inline-block !important;
+      }
+
+      aside.collapsed .menu-item,
+      aside.collapsed .action-btn {
+        justify-content: flex-start !important;
+        padding: 10px 12px !important;
+      }
+
       .mobile-header { display: flex; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Overlay làm mờ nền khi bật menu mobile -->
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <!-- Overlay mờ khi mở menu Mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
 
-  <!-- SIDEBAR NAVIGATION -->
+  <!-- SIDEBAR MASTER HUB -->
   <aside id="sidebar">
     <div class="sidebar-header">
       <div class="brand">
@@ -260,46 +307,46 @@
         <span>DTLC Hub</span>
         <span class="brand-badge">DTLC</span>
       </div>
-      <button class="close-sidebar-btn" onclick="closeSidebar()">
-        <i class="fa-solid fa-xmark"></i>
+      <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Thu gọn / Mở rộng Sidebar">
+        <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
       </button>
     </div>
 
-    <!-- Danh sách Menu 4 App -->
+    <!-- Danh sách 4 App -->
     <ul class="menu-list">
       <li>
-        <button class="menu-item active" onclick="switchTab(this, 'app1', 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin')">
+        <button class="menu-item active" onclick="switchTab(this, 'app1', 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin')" title="LIFT Schedule / Lịch Xe">
           <i class="fa-solid fa-car-side"></i>
           <span>LIFT Schedule / Lịch Xe</span>
         </button>
       </li>
       <li>
-        <button class="menu-item" onclick="switchTab(this, 'app2', 'https://script.google.com/macros/s/AKfycbwy5n54KxkULG5wTC5K97ouLa1_fI2PIMZcZSVL444E8j-ffp95DaZkdKF1v-T4xhr1/exec')">
+        <button class="menu-item" onclick="switchTab(this, 'app2', 'https://script.google.com/macros/s/AKfycbwy5n54KxkULG5wTC5K97ouLa1_fI2PIMZcZSVL444E8j-ffp95DaZkdKF1v-T4xhr1/exec')" title="Quản Lý HS Trung Tâm">
           <i class="fa-solid fa-chart-pie"></i>
           <span>Quản Lý HS Trung Tâm</span>
         </button>
       </li>
       <li>
-        <button class="menu-item" onclick="switchTab(this, 'app3', 'https://script.google.com/macros/s/AKfycbxuGwttRNWhWft0ku_89g-n_zN9dfR65m5EWw99uAAtQSrJEU4Fcg7hlA7y2UBViMh7/exec')">
+        <button class="menu-item" onclick="switchTab(this, 'app3', 'https://script.google.com/macros/s/AKfycbxuGwttRNWhWft0ku_89g-n_zN9dfR65m5EWw99uAAtQSrJEU4Fcg7hlA7y2UBViMh7/exec')" title="Quản lý Lịch Dạy">
           <i class="fa-solid fa-graduation-cap"></i>
           <span>Quản lý Lịch Dạy</span>
         </button>
       </li>
       <li>
-        <button class="menu-item" onclick="switchTab(this, 'app4', 'https://script.google.com/macros/s/AKfycbwvML7u1lSePpv_cfToSC_5mCcrW1aB8Sh1iekUh4c5GbXq5QNtUp2DRAYDy0yQeIfFGQ/exec')">
+        <button class="menu-item" onclick="switchTab(this, 'app4', 'https://script.google.com/macros/s/AKfycbwvML7u1lSePpv_cfToSC_5mCcrW1aB8Sh1iekUh4c5GbXq5QNtUp2DRAYDy0yQeIfFGQ/exec')" title="Quản Lý Công Việc">
           <i class="fa-solid fa-list-check"></i>
           <span>Quản Lý Công Việc</span>
         </button>
       </li>
     </ul>
 
-    <!-- Nút làm mới & mở tab mới ở góc dưới Sidebar -->
+    <!-- Footer Sidebar -->
     <div class="sidebar-footer">
-      <button class="action-btn" onclick="reloadCurrentApp()">
+      <button class="action-btn" onclick="reloadCurrentApp()" title="Làm mới app">
         <i class="fa-solid fa-rotate-right" style="color: var(--primary-red);"></i>
         <span>Làm mới ứng dụng</span>
       </button>
-      <button class="action-btn" onclick="openInNewTab()">
+      <button class="action-btn" onclick="openInNewTab()" title="Mở tab mới">
         <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--primary-red);"></i>
         <span>Mở ở cửa sổ mới</span>
       </button>
@@ -308,9 +355,9 @@
 
   <!-- WORKSPACE CHÍNH -->
   <main>
-    <!-- Header hiển thị trên Mobile -->
+    <!-- Mobile Header -->
     <div class="mobile-header">
-      <button class="menu-toggle-btn" onclick="openSidebar()">
+      <button class="menu-toggle-btn" onclick="openMobileSidebar()">
         <i class="fa-solid fa-bars"></i>
       </button>
       <span class="mobile-title" id="currentAppTitle">LIFT Schedule / Lịch Xe</span>
@@ -337,46 +384,60 @@
     let activeAppId = 'app1';
     let activeAppUrl = 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin';
 
-    // Bật/tắt Sidebar trên Mobile
-    function openSidebar() {
+    // Đọc trạng thái thu gọn Sidebar đã lưu
+    document.addEventListener("DOMContentLoaded", () => {
+      const isCollapsed = localStorage.getItem("sidebar_collapsed") === "true";
+      if (isCollapsed && window.innerWidth > 768) {
+        document.getElementById("sidebar").classList.add("collapsed");
+        document.getElementById("toggleIcon").className = "fa-solid fa-chevron-right";
+      }
+    });
+
+    // Bật / Thu gọn Sidebar trên Desktop
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const toggleIcon = document.getElementById("toggleIcon");
+      
+      sidebar.classList.toggle("collapsed");
+      const isCollapsed = sidebar.classList.contains("collapsed");
+      
+      toggleIcon.className = isCollapsed ? "fa-solid fa-chevron-right" : "fa-solid fa-chevron-left";
+      localStorage.setItem("sidebar_collapsed", isCollapsed);
+    }
+
+    // Quản lý Mobile Sidebar
+    function openMobileSidebar() {
       document.getElementById('sidebar').classList.add('open');
       document.getElementById('sidebarOverlay').classList.add('active');
     }
 
-    function closeSidebar() {
+    function closeMobileSidebar() {
       document.getElementById('sidebar').classList.remove('open');
       document.getElementById('sidebarOverlay').classList.remove('active');
     }
 
-    // Chuyển đổi ứng dụng
+    // Chuyển Tab App
     function switchTab(btnElem, tabId, appUrl) {
       activeAppId = tabId;
       activeAppUrl = appUrl;
 
-      // 1. Cập nhật nút active trong Sidebar
       document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
       btnElem.classList.add('active');
 
-      // 2. Cập nhật tên App hiển thị trên Header Mobile
-      const appTitle = btnElem.querySelector('span').innerText;
+      const appTitle = btnElem.getAttribute('title') || btnElem.querySelector('span').innerText;
       document.getElementById('currentAppTitle').innerText = appTitle;
 
-      // 3. Đổi iFrame
       document.querySelectorAll('.tab-iframe').forEach(iframe => iframe.classList.remove('active'));
       const targetIframe = document.getElementById(tabId);
       
-      // Lazy Load: Chỉ tải khi mở ứng dụng lần đầu
       if (appUrl && !targetIframe.getAttribute('src')) {
         targetIframe.setAttribute('src', appUrl);
       }
       
       targetIframe.classList.add('active');
-
-      // 4. Đóng Sidebar trên Mobile sau khi chọn xong
-      closeSidebar();
+      closeMobileSidebar();
     }
 
-    // Nút làm mới App hiện tại
     function reloadCurrentApp() {
       const currentIframe = document.getElementById(activeAppId);
       if (currentIframe && currentIframe.getAttribute('src')) {
@@ -384,7 +445,6 @@
       }
     }
 
-    // Nút mở App ra tab mới độc lập
     function openInNewTab() {
       if (activeAppUrl) {
         window.open(activeAppUrl, '_blank');
