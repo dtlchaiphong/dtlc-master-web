@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DTLC Master Hub - SSO System</title>
+  <title>DTLC - Trung Tâm Quản Lý Ứng Dụng</title>
+  <!-- Google Fonts & Font Awesome Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
@@ -23,155 +24,279 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { display: flex; height: 100vh; height: 100dvh; overflow: hidden; background: var(--bg-color); color: var(--text-main); }
 
-    /* MÀN HÌNH ĐĂNG NHẬP MASTER SSO */
-    .login-modal-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: #121212;
-      z-index: 9999;
-      display: flex; align-items: center; justify-content: center;
-      padding: 16px;
-    }
-
-    .login-card {
-      background: #ffffff;
-      width: 100%; max-width: 380px;
-      padding: 28px 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      text-align: center;
-    }
-
-    .login-card i.logo-icon {
-      font-size: 42px; color: var(--primary-red); margin-bottom: 12px;
-    }
-
-    .login-card h2 { font-size: 20px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
-    .login-card p { font-size: 13px; color: var(--text-sub); margin-bottom: 20px; }
-
-    .pin-input {
-      width: 100%;
-      padding: 14px;
-      font-size: 18px;
-      text-align: center;
-      letter-spacing: 6px;
-      border: 2px solid var(--border-color);
-      border-radius: 10px;
-      outline: none;
-      margin-bottom: 16px;
-      transition: all 0.2s;
-    }
-    .pin-input:focus { border-color: var(--primary-red); }
-
-    .login-btn {
-      width: 100%;
-      padding: 12px;
-      background: var(--primary-red);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .login-btn:hover { background: var(--primary-red-hover); }
-
-    /* GIAO DIỆN HUB CHÍNH */
+    /* Overlay phông nền mờ cho Mobile */
     .sidebar-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.4); z-index: 99; display: none; opacity: 0;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 99;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
     .sidebar-overlay.active { display: block; opacity: 1; }
 
+    /* SIDEBAR MASTER */
     aside {
       width: var(--sidebar-width);
-      background: #ffffff; border-right: 1px solid var(--border-color);
-      display: flex; flex-direction: column; z-index: 100;
+      background: #ffffff;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
       transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
-      position: relative; flex-shrink: 0;
+      position: relative;
+      flex-shrink: 0;
     }
 
-    aside.collapsed { width: var(--sidebar-collapsed-width); }
+    /* Khi Sidebar ở trạng thái Thu gọn (Collapsed) */
+    aside.collapsed {
+      width: var(--sidebar-collapsed-width);
+    }
 
     .sidebar-header {
-      padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 2px solid var(--primary-red-light); height: 52px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--primary-red-light);
+      height: 52px;
     }
 
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; color: var(--primary-red); white-space: nowrap; overflow: hidden; }
-    .brand-badge { background: var(--primary-red); color: #ffffff; padding: 2px 5px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--primary-red);
+      white-space: nowrap;
+      overflow: hidden;
+    }
 
+    .brand-badge {
+      background: var(--primary-red);
+      color: #ffffff;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* Nút Thu Gọn Sidebar trên Desktop */
     .toggle-sidebar-btn {
-      background: #f5f5f5; border: 1px solid var(--border-color); color: var(--text-sub);
-      width: 30px; height: 30px; border-radius: 6px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      background: #f5f5f5;
+      border: 1px solid var(--border-color);
+      color: var(--text-sub);
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .toggle-sidebar-btn:hover { background: var(--primary-red-light); color: var(--primary-red); }
+
+    /* Khi thu gọn, ẩn tên Logo & Badge */
+    aside.collapsed .brand span,
+    aside.collapsed .brand-badge {
+      display: none;
     }
 
-    aside.collapsed .brand span, aside.collapsed .brand-badge { display: none; }
-
-    .menu-list { list-style: none; padding: 10px 8px; display: flex; flex-direction: column; gap: 6px; flex: 1; overflow-y: auto; }
+    /* Danh sách Menu */
+    .menu-list {
+      list-style: none;
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      overflow-y: auto;
+    }
 
     .menu-item {
-      display: flex; align-items: center; gap: 12px; padding: 10px 12px;
-      border-radius: 8px; border: none; background: transparent;
-      font-size: 13.5px; font-weight: 600; color: var(--text-sub); cursor: pointer;
-      width: 100%; text-align: left; white-space: nowrap; transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-sub);
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      position: relative;
     }
-    .menu-item i { font-size: 16px; width: 22px; text-align: center; color: #757575; flex-shrink: 0; }
-    .menu-item:hover { background: #f5f5f5; color: var(--text-main); }
-    .menu-item.active { background: var(--primary-red-light); color: var(--primary-red); }
-    .menu-item.active i { color: var(--primary-red); }
 
-    aside.collapsed .menu-item span { display: none; }
-    aside.collapsed .menu-item { justify-content: center; padding: 10px 0; }
+    .menu-item i {
+      font-size: 16px;
+      width: 22px;
+      text-align: center;
+      color: #757575;
+      flex-shrink: 0;
+    }
 
-    .sidebar-footer { padding: 8px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px; }
+    .menu-item:hover {
+      background: #f5f5f5;
+      color: var(--text-main);
+    }
+
+    .menu-item.active {
+      background: var(--primary-red-light);
+      color: var(--primary-red);
+    }
+
+    .menu-item.active i {
+      color: var(--primary-red);
+    }
+
+    /* Khi thu gọn, ẩn chữ của Menu Item */
+    aside.collapsed .menu-item span {
+      display: none;
+    }
+
+    aside.collapsed .menu-item {
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    /* Footer Sidebar (Nút Làm mới / Mở tab mới) */
+    .sidebar-footer {
+      padding: 8px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
     .action-btn {
-      display: flex; align-items: center; gap: 10px; padding: 8px 10px;
-      border-radius: 6px; border: 1px solid var(--border-color); background: #ffffff;
-      font-size: 12px; font-weight: 600; color: var(--text-sub); cursor: pointer;
-      width: 100%; white-space: nowrap; transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      cursor: pointer;
+      width: 100%;
+      white-space: nowrap;
+      transition: all 0.2s ease;
     }
+
     .action-btn:hover { background: #f5f5f5; color: var(--text-main); }
+
     aside.collapsed .action-btn span { display: none; }
     aside.collapsed .action-btn { justify-content: center; padding: 8px 0; }
 
-    main { flex: 1; display: flex; flex-direction: column; height: 100%; position: relative; background: #ffffff; }
-
-    .mobile-header {
-      height: 44px; background: #ffffff; border-bottom: 1px solid var(--border-color);
-      display: none; align-items: center; justify-content: space-between; padding: 0 10px;
+    /* WORKSPACE CHÍNH */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      background: #ffffff;
     }
-    .menu-toggle-btn { background: none; border: none; font-size: 18px; color: var(--primary-red); cursor: pointer; }
-    .mobile-title { font-weight: 700; font-size: 14px; color: var(--primary-red); }
-    .mobile-actions { display: flex; gap: 4px; }
-    .icon-btn-mobile { background: none; border: none; font-size: 15px; color: var(--text-sub); padding: 4px 6px; cursor: pointer; }
 
-    .content-area { flex: 1; position: relative; width: 100%; height: 100%; }
-    .tab-iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; display: none; }
+    /* Mobile Header */
+    .mobile-header {
+      height: 44px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+
+    .menu-toggle-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--primary-red);
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .mobile-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--primary-red);
+    }
+
+    .mobile-actions { display: flex; gap: 4px; }
+
+    .icon-btn-mobile {
+      background: none;
+      border: none;
+      font-size: 15px;
+      color: var(--text-sub);
+      padding: 4px 6px;
+      cursor: pointer;
+    }
+
+    /* iFrame Area */
+    .content-area {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .tab-iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+      display: none;
+    }
+
     .tab-iframe.active { display: block; }
 
+    /* RESPONSIVE DESIGNS FOR MOBILE */
     @media (max-width: 768px) {
-      aside { position: fixed; top: 0; left: 0; bottom: 0; width: var(--sidebar-width) !important; transform: translateX(-100%); box-shadow: 4px 0 16px rgba(0,0,0,0.15); }
-      aside.open { transform: translateX(0); }
+      aside {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        width: var(--sidebar-width) !important;
+        transform: translateX(-100%);
+        box-shadow: 4px 0 16px rgba(0,0,0,0.15);
+      }
+
+      aside.open {
+        transform: translateX(0);
+      }
+
+      aside.collapsed .brand span,
+      aside.collapsed .brand-badge,
+      aside.collapsed .menu-item span,
+      aside.collapsed .action-btn span {
+        display: inline-block !important;
+      }
+
+      aside.collapsed .menu-item,
+      aside.collapsed .action-btn {
+        justify-content: flex-start !important;
+        padding: 10px 12px !important;
+      }
+
       .mobile-header { display: flex; }
     }
   </style>
 </head>
 <body>
 
-  <!-- MÀN HÌNH ĐĂNG NHẬP SSO -->
-  <div class="login-modal-overlay" id="ssoLoginModal">
-    <div class="login-card">
-      <i class="fa-solid fa-shield-halved logo-icon"></i>
-      <h2>DTLC Master SSO</h2>
-      <p>Mở khóa hệ thống quản lý tập trung</p>
-      <input type="password" id="masterPinInput" class="pin-input" placeholder="••••••" maxlength="10">
-      <button class="login-btn" onclick="verifyMasterPin()">ĐĂNG NHẬP HỆ THỐNG</button>
-    </div>
-  </div>
-
+  <!-- Overlay mờ khi mở menu Mobile -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
 
   <!-- SIDEBAR MASTER HUB -->
@@ -180,56 +305,73 @@
       <div class="brand">
         <i class="fa-solid fa-layer-group"></i>
         <span>DTLC Hub</span>
-        <span class="brand-badge">SSO</span>
+        <span class="brand-badge">DTLC</span>
       </div>
-      <button class="toggle-sidebar-btn" onclick="toggleSidebar()">
+      <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Thu gọn / Mở rộng Sidebar">
         <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
       </button>
     </div>
 
+    <!-- Danh sách 4 App -->
     <ul class="menu-list">
       <li>
         <button class="menu-item active" onclick="switchTab(this, 'app1', 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin')" title="LIFT Schedule / Lịch Xe">
-          <i class="fa-solid fa-car-side"></i><span>LIFT Schedule / Lịch Xe</span>
+          <i class="fa-solid fa-car-side"></i>
+          <span>LIFT Schedule / Lịch Xe</span>
         </button>
       </li>
       <li>
         <button class="menu-item" onclick="switchTab(this, 'app2', 'https://script.google.com/macros/s/AKfycbwy5n54KxkULG5wTC5K97ouLa1_fI2PIMZcZSVL444E8j-ffp95DaZkdKF1v-T4xhr1/exec')" title="Quản Lý HS Trung Tâm">
-          <i class="fa-solid fa-chart-pie"></i><span>Quản Lý HS Trung Tâm</span>
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Quản Lý HS Trung Tâm</span>
         </button>
       </li>
       <li>
         <button class="menu-item" onclick="switchTab(this, 'app3', 'https://script.google.com/macros/s/AKfycbxuGwttRNWhWft0ku_89g-n_zN9dfR65m5EWw99uAAtQSrJEU4Fcg7hlA7y2UBViMh7/exec')" title="Quản lý Lịch Dạy">
-          <i class="fa-solid fa-graduation-cap"></i><span>Quản lý Lịch Dạy</span>
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Quản lý Lịch Dạy</span>
         </button>
       </li>
       <li>
         <button class="menu-item" onclick="switchTab(this, 'app4', 'https://script.google.com/macros/s/AKfycbwvML7u1lSePpv_cfToSC_5mCcrW1aB8Sh1iekUh4c5GbXq5QNtUp2DRAYDy0yQeIfFGQ/exec')" title="Quản Lý Công Việc">
-          <i class="fa-solid fa-list-check"></i><span>Quản Lý Công Việc</span>
+          <i class="fa-solid fa-list-check"></i>
+          <span>Quản Lý Công Việc</span>
         </button>
       </li>
     </ul>
 
+    <!-- Footer Sidebar -->
     <div class="sidebar-footer">
-      <button class="action-btn" onclick="logoutMasterSSO()">
-        <i class="fa-solid fa-right-from-bracket" style="color: var(--primary-red);"></i><span>Đăng xuất Hub</span>
+      <button class="action-btn" onclick="reloadCurrentApp()" title="Làm mới app">
+        <i class="fa-solid fa-rotate-right" style="color: var(--primary-red);"></i>
+        <span>Làm mới ứng dụng</span>
       </button>
-      <button class="action-btn" onclick="reloadCurrentApp()">
-        <i class="fa-solid fa-rotate-right" style="color: var(--primary-red);"></i><span>Làm mới ứng dụng</span>
+      <button class="action-btn" onclick="openInNewTab()" title="Mở tab mới">
+        <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--primary-red);"></i>
+        <span>Mở ở cửa sổ mới</span>
       </button>
     </div>
   </aside>
 
+  <!-- WORKSPACE CHÍNH -->
   <main>
+    <!-- Mobile Header -->
     <div class="mobile-header">
-      <button class="menu-toggle-btn" onclick="openMobileSidebar()"><i class="fa-solid fa-bars"></i></button>
+      <button class="menu-toggle-btn" onclick="openMobileSidebar()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
       <span class="mobile-title" id="currentAppTitle">LIFT Schedule / Lịch Xe</span>
       <div class="mobile-actions">
-        <button class="icon-btn-mobile" onclick="reloadCurrentApp()"><i class="fa-solid fa-rotate-right"></i></button>
-        <button class="icon-btn-mobile" onclick="openInNewTab()"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+        <button class="icon-btn-mobile" onclick="reloadCurrentApp()" title="Làm mới">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+        <button class="icon-btn-mobile" onclick="openInNewTab()" title="Mở tab mới">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </button>
       </div>
     </div>
 
+    <!-- Khu vực hiển thị iFrame -->
     <div class="content-area">
       <iframe id="app1" class="tab-iframe active" src="https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin"></iframe>
       <iframe id="app2" class="tab-iframe"></iframe>
@@ -239,21 +381,11 @@
   </main>
 
   <script>
-    // Mật khẩu PIN của Master Hub (Bạn có thể đổi mã này)
-    const MASTER_PIN = "123456"; 
-    let authenticatedPin = "";
-
     let activeAppId = 'app1';
     let activeAppUrl = 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin';
 
+    // Đọc trạng thái thu gọn Sidebar đã lưu
     document.addEventListener("DOMContentLoaded", () => {
-      // Kiểm tra xem đã lưu phiên đăng nhập trước đó chưa
-      const savedPin = sessionStorage.getItem("sso_authenticated_pin");
-      if (savedPin === MASTER_PIN) {
-        authenticatedPin = savedPin;
-        document.getElementById("ssoLoginModal").style.display = "none";
-      }
-
       const isCollapsed = localStorage.getItem("sidebar_collapsed") === "true";
       if (isCollapsed && window.innerWidth > 768) {
         document.getElementById("sidebar").classList.add("collapsed");
@@ -261,54 +393,19 @@
       }
     });
 
-    // Xác thực PIN Master Hub
-    function verifyMasterPin() {
-      const enteredPin = document.getElementById("masterPinInput").value.trim();
-      if (enteredPin === MASTER_PIN) {
-        authenticatedPin = enteredPin;
-        sessionStorage.setItem("sso_authenticated_pin", enteredPin);
-        document.getElementById("ssoLoginModal").style.display = "none";
-        sendSSOTokenToActiveIframe();
-      } else {
-        alert("Mã PIN không chính xác!");
-      }
-    }
-
-    // Tự động phát Tín hiệu SSO (postMessage) tới iFrame
-    function sendSSOTokenToActiveIframe() {
-      const iframe = document.getElementById(activeAppId);
-      if (iframe && iframe.contentWindow) {
-        // Gửi thông tin xác thực sang Web App con
-        iframe.contentWindow.postMessage({
-          type: 'DTLC_SSO_AUTH',
-          pin: authenticatedPin
-        }, '*');
-      }
-    }
-
-    // Khi iframe tải xong, tự động gửi lại tín hiệu SSO
-    document.querySelectorAll('.tab-iframe').forEach(iframe => {
-      iframe.addEventListener('load', () => {
-        if (authenticatedPin) {
-          sendSSOTokenToActiveIframe();
-        }
-      });
-    });
-
-    function logoutMasterSSO() {
-      sessionStorage.removeItem("sso_authenticated_pin");
-      location.reload();
-    }
-
+    // Bật / Thu gọn Sidebar trên Desktop
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
       const toggleIcon = document.getElementById("toggleIcon");
+      
       sidebar.classList.toggle("collapsed");
       const isCollapsed = sidebar.classList.contains("collapsed");
+      
       toggleIcon.className = isCollapsed ? "fa-solid fa-chevron-right" : "fa-solid fa-chevron-left";
       localStorage.setItem("sidebar_collapsed", isCollapsed);
     }
 
+    // Quản lý Mobile Sidebar
     function openMobileSidebar() {
       document.getElementById('sidebar').classList.add('open');
       document.getElementById('sidebarOverlay').classList.add('active');
@@ -319,6 +416,7 @@
       document.getElementById('sidebarOverlay').classList.remove('active');
     }
 
+    // Chuyển Tab App
     function switchTab(btnElem, tabId, appUrl) {
       activeAppId = tabId;
       activeAppUrl = appUrl;
