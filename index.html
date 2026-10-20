@@ -4,6 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DTLC - Trung Tâm Quản Lý Ứng Dụng</title>
+
+  <!-- CẤU HÌNH PWA / NATIVE APP FOR MOBILE -->
+  <meta name="theme-color" content="#d32f2f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DTLC Hub">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3448/3448339.png">
+
+  <!-- LIÊN KẾT ĐẾN FILE MANIFEST VẬT LÝ -->
+  <link rel="manifest" href="./manifest.json">
+
   <!-- Google Fonts & Font Awesome Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,7 +34,84 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { display: flex; height: 100vh; height: 100dvh; overflow: hidden; background: var(--bg-color); color: var(--text-main); }
+    body { display: flex; height: 100vh; height: 100dvh; overflow: hidden; background: var(--bg-color); color: var(--text-main); flex-direction: column; }
+
+    /* BANNER GỢI Ý CÀI ĐẶT APP DÀNH CHO MOBILE */
+    .pwa-install-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--primary-red);
+      color: #ffffff;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 9999;
+      flex-shrink: 0;
+    }
+
+    .pwa-banner-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pwa-banner-content i {
+      font-size: 18px;
+      animation: bounce 2s infinite;
+    }
+
+    .pwa-banner-text p {
+      font-size: 11px;
+      font-weight: 400;
+      opacity: 0.9;
+    }
+
+    .pwa-banner-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pwa-btn-install {
+      background: #ffffff;
+      color: var(--primary-red);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.2s;
+    }
+    .pwa-btn-install:active { background: #f1f1f1; }
+
+    .pwa-btn-close {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-4px); }
+      60% { transform: translateY(-2px); }
+    }
+
+    /* GIAO DIỆN CHÍNH */
+    .app-wrapper {
+      display: flex;
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
 
     /* Overlay phông nền mờ cho Mobile */
     .sidebar-overlay {
@@ -167,7 +256,7 @@
       padding: 10px 0;
     }
 
-    /* Footer Sidebar (Nút Làm mới / Mở tab mới) */
+    /* Footer Sidebar */
     .sidebar-footer {
       padding: 8px;
       border-top: 1px solid var(--border-color);
@@ -296,89 +385,112 @@
 </head>
 <body>
 
-  <!-- Overlay mờ khi mở menu Mobile -->
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
-
-  <!-- SIDEBAR MASTER HUB -->
-  <aside id="sidebar">
-    <div class="sidebar-header">
-      <div class="brand">
-        <i class="fa-solid fa-layer-group"></i>
-        <span>DTLC Hub</span>
-        <span class="brand-badge">DTLC</span>
-      </div>
-      <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Thu gọn / Mở rộng Sidebar">
-        <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
-      </button>
-    </div>
-
-    <!-- Danh sách 4 App -->
-    <ul class="menu-list">
-      <li>
-        <button class="menu-item active" onclick="switchTab(this, 'app1', 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin')" title="LIFT Schedule / Lịch Xe">
-          <i class="fa-solid fa-car-side"></i>
-          <span>LIFT Schedule / Lịch Xe</span>
-        </button>
-      </li>
-      <li>
-        <button class="menu-item" onclick="switchTab(this, 'app2', 'https://script.google.com/macros/s/AKfycbwy5n54KxkULG5wTC5K97ouLa1_fI2PIMZcZSVL444E8j-ffp95DaZkdKF1v-T4xhr1/exec')" title="Quản Lý HS Trung Tâm">
-          <i class="fa-solid fa-graduation-cap"></i>
-          <span>Quản Lý HS Trung Tâm</span>
-        </button>
-      </li>
-      <li>
-        <button class="menu-item" onclick="switchTab(this, 'app3', 'https://dtlc-schedule.vercel.app')" title="Quản lý Lịch Dạy">
-          <i class="fa-solid fa-chart-pie"></i>
-          <span>Quản lý Lịch Dạy</span>
-        </button>
-      </li>
-      <li>
-        <button class="menu-item" onclick="switchTab(this, 'app4', 'https://script.google.com/macros/s/AKfycbwvML7u1lSePpv_cfToSC_5mCcrW1aB8Sh1iekUh4c5GbXq5QNtUp2DRAYDy0yQeIfFGQ/exec')" title="Quản Lý Công Việc">
-          <i class="fa-solid fa-list-check"></i>
-          <span>Quản Lý Công Việc</span>
-        </button>
-      </li>
-    </ul>
-
-    <!-- Footer Sidebar -->
-    <div class="sidebar-footer">
-      <button class="action-btn" onclick="reloadCurrentApp()" title="Làm mới app">
-        <i class="fa-solid fa-rotate-right" style="color: var(--primary-red);"></i>
-        <span>Làm mới ứng dụng</span>
-      </button>
-      <button class="action-btn" onclick="openInNewTab()" title="Mở tab mới">
-        <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--primary-red);"></i>
-        <span>Mở ở cửa sổ mới</span>
-      </button>
-    </div>
-  </aside>
-
-  <!-- WORKSPACE CHÍNH -->
-  <main>
-    <!-- Mobile Header -->
-    <div class="mobile-header">
-      <button class="menu-toggle-btn" onclick="openMobileSidebar()">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-      <span class="mobile-title" id="currentAppTitle">LIFT Schedule / Lịch Xe</span>
-      <div class="mobile-actions">
-        <button class="icon-btn-mobile" onclick="reloadCurrentApp()" title="Làm mới">
-          <i class="fa-solid fa-rotate-right"></i>
-        </button>
-        <button class="icon-btn-mobile" onclick="openInNewTab()" title="Mở tab mới">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </button>
+  <!-- BANNER CÀI ĐẶT APP TRÊN MOBILE -->
+  <div class="pwa-install-banner" id="pwaInstallBanner">
+    <div class="pwa-banner-content">
+      <i class="fa-solid fa-download"></i>
+      <div class="pwa-banner-text">
+        <span>Cài đặt ứng dụng DTLC Hub</span>
+        <p>Thêm ứng dụng vào màn hình chính điện thoại</p>
       </div>
     </div>
-
-    <!-- Khu vực hiển thị iFrame -->
-    <div class="content-area">
-      <iframe id="app1" class="tab-iframe active" src="https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin"></iframe>
-      <iframe id="app2" class="tab-iframe"></iframe>
-      <iframe id="app3" class="tab-iframe"></iframe>
-      <iframe id="app4" class="tab-iframe"></iframe>
+    <div class="pwa-banner-actions">
+      <button class="pwa-btn-install" onclick="installPWA()">Cài đặt</button>
+      <button class="pwa-btn-close" onclick="closeInstallBanner()" aria-label="Đóng">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
-  </main>
+  </div>
+
+  <div class="app-wrapper">
+    <!-- Overlay mờ khi mở menu Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
+    <!-- SIDEBAR MASTER HUB -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>DTLC Hub</span>
+          <span class="brand-badge">DTLC</span>
+        </div>
+        <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Thu gọn / Mở rộng Sidebar">
+          <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
+        </button>
+      </div>
+
+      <!-- Danh sách 4 App -->
+      <ul class="menu-list">
+        <li>
+          <button class="menu-item active" onclick="switchTab(this, 'app1', 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin')" title="LIFT Schedule / Lịch Xe">
+            <i class="fa-solid fa-car-side"></i>
+            <span>LIFT Schedule / Lịch Xe</span>
+          </button>
+        </li>
+        <li>
+          <button class="menu-item" onclick="switchTab(this, 'app2', 'https://script.google.com/macros/s/AKfycbwy5n54KxkULG5wTC5K97ouLa1_fI2PIMZcZSVL444E8j-ffp95DaZkdKF1v-T4xhr1/exec')" title="Quản Lý HS Trung Tâm">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Quản Lý HS Trung Tâm</span>
+          </button>
+        </li>
+        <li>
+          <button class="menu-item" onclick="switchTab(this, 'app3', 'https://dtlc-schedule.vercel.app')" title="Quản lý Lịch Dạy">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Quản lý Lịch Dạy</span>
+          </button>
+        </li>
+        <li>
+          <button class="menu-item" onclick="switchTab(this, 'app4', 'https://script.google.com/macros/s/AKfycbwvML7u1lSePpv_cfToSC_5mCcrW1aB8Sh1iekUh4c5GbXq5QNtUp2DRAYDy0yQeIfFGQ/exec')" title="Quản Lý Công Việc">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Quản Lý Công Việc</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Footer Sidebar -->
+      <div class="sidebar-footer">
+        <button class="action-btn" id="sidebarInstallBtn" onclick="installPWA()" style="display: none; color: var(--primary-red); background: var(--primary-red-light); border-color: rgba(211,47,47,0.2);">
+          <i class="fa-solid fa-download"></i>
+          <span>Cài đặt ứng dụng</span>
+        </button>
+        <button class="action-btn" onclick="reloadCurrentApp()" title="Làm mới app">
+          <i class="fa-solid fa-rotate-right" style="color: var(--primary-red);"></i>
+          <span>Làm mới ứng dụng</span>
+        </button>
+        <button class="action-btn" onclick="openInNewTab()" title="Mở tab mới">
+          <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--primary-red);"></i>
+          <span>Mở ở cửa sổ mới</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- WORKSPACE CHÍNH -->
+    <main>
+      <!-- Mobile Header -->
+      <div class="mobile-header">
+        <button class="menu-toggle-btn" onclick="openMobileSidebar()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <span class="mobile-title" id="currentAppTitle">LIFT Schedule / Lịch Xe</span>
+        <div class="mobile-actions">
+          <button class="icon-btn-mobile" onclick="reloadCurrentApp()" title="Làm mới">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+          <button class="icon-btn-mobile" onclick="openInNewTab()" title="Mở tab mới">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Khu vực hiển thị iFrame -->
+      <div class="content-area">
+        <iframe id="app1" class="tab-iframe active" src="https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin"></iframe>
+        <iframe id="app2" class="tab-iframe"></iframe>
+        <iframe id="app3" class="tab-iframe"></iframe>
+        <iframe id="app4" class="tab-iframe"></iframe>
+      </div>
+    </main>
+  </div>
 
   <script>
     let activeAppId = 'app1';
@@ -449,6 +561,49 @@
       if (activeAppUrl) {
         window.open(activeAppUrl, '_blank');
       }
+    }
+
+    // ==========================================
+    // KHỞI TẠO TÍNH NĂNG CÀI ĐẶT PWA
+    // ==========================================
+    let deferredPrompt;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      // Hiển thị Banner gợi ý & Nút cài đặt trong Sidebar
+      if (localStorage.getItem('pwa_master_banner_dismissed') !== 'true') {
+        document.getElementById('pwaInstallBanner').style.display = 'flex';
+      }
+      document.getElementById('sidebarInstallBtn').style.display = 'flex';
+    });
+
+    function installPWA() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            closeInstallBanner();
+            document.getElementById('sidebarInstallBtn').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      }
+    }
+
+    function closeInstallBanner() {
+      document.getElementById('pwaInstallBanner').style.display = 'none';
+      localStorage.setItem('pwa_master_banner_dismissed', 'true');
+    }
+
+    // Đăng ký Service Worker vật lý
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('Service Worker registered successfully'))
+          .catch((err) => console.log('Service Worker registration failed:', err));
+      });
     }
   </script>
 </body>
