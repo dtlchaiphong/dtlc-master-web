@@ -1,0 +1,22 @@
+{
+  "name": "DTLC Master Hub",
+  "short_name": "DTLC Hub",
+  "description": "Trung Tâm Quản Lý Ứng Dụng Tập Trung DTLC",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#d32f2f",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3448/3448339.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3448/3448339.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
