@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="DTLC Hub">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3448/3448339.png">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9070/9070442.png">
 
   <!-- LIÊN KẾT ĐẾN FILE MANIFEST VẬT LÝ -->
   <link rel="manifest" href="./manifest.json">
@@ -138,7 +138,6 @@
       flex-shrink: 0;
     }
 
-    /* Khi Sidebar ở trạng thái Thu gọn (Collapsed) */
     aside.collapsed {
       width: var(--sidebar-collapsed-width);
     }
@@ -172,7 +171,6 @@
       font-weight: 700;
     }
 
-    /* Nút Thu Gọn Sidebar trên Desktop */
     .toggle-sidebar-btn {
       background: #f5f5f5;
       border: 1px solid var(--border-color);
@@ -188,7 +186,6 @@
     }
     .toggle-sidebar-btn:hover { background: var(--primary-red-light); color: var(--primary-red); }
 
-    /* Khi thu gọn, ẩn tên Logo & Badge */
     aside.collapsed .brand span,
     aside.collapsed .brand-badge {
       display: none;
@@ -246,7 +243,6 @@
       color: var(--primary-red);
     }
 
-    /* Khi thu gọn, ẩn chữ của Menu Item */
     aside.collapsed .menu-item span {
       display: none;
     }
@@ -388,7 +384,7 @@
   <!-- BANNER CÀI ĐẶT APP TRÊN MOBILE -->
   <div class="pwa-install-banner" id="pwaInstallBanner">
     <div class="pwa-banner-content">
-      <i class="fa-solid fa-download"></i>
+      <i class="fa-solid fa-circle-down"></i>
       <div class="pwa-banner-text">
         <span>Cài đặt ứng dụng DTLC Hub</span>
         <p>Thêm ứng dụng vào màn hình chính điện thoại</p>
@@ -410,38 +406,38 @@
     <aside id="sidebar">
       <div class="sidebar-header">
         <div class="brand">
-          <i class="fa-solid fa-layer-group"></i>
+          <i class="fa-solid fa-shield-halved"></i>
           <span>DTLC Hub</span>
-          <span class="brand-badge">DTLC</span>
+          <span class="brand-badge">ADMIN</span>
         </div>
         <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Thu gọn / Mở rộng Sidebar">
           <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
         </button>
       </div>
 
-      <!-- Danh sách 4 App -->
+      <!-- BỘ ICON QUẢN TRỊ DOANH NGHIỆP MỚI -->
       <ul class="menu-list">
         <li>
           <button class="menu-item active" onclick="switchTab(this, 'app1', 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin')" title="LIFT Schedule / Lịch Xe">
-            <i class="fa-solid fa-car-side"></i>
+            <i class="fa-solid fa-route"></i>
             <span>LIFT Schedule / Lịch Xe</span>
           </button>
         </li>
         <li>
           <button class="menu-item" onclick="switchTab(this, 'app2', 'https://script.google.com/macros/s/AKfycbwy5n54KxkULG5wTC5K97ouLa1_fI2PIMZcZSVL444E8j-ffp95DaZkdKF1v-T4xhr1/exec')" title="Quản Lý HS Trung Tâm">
-            <i class="fa-solid fa-graduation-cap"></i>
+            <i class="fa-solid fa-user-graduate"></i>
             <span>Quản Lý HS Trung Tâm</span>
           </button>
         </li>
         <li>
           <button class="menu-item" onclick="switchTab(this, 'app3', 'https://dtlc-schedule.vercel.app')" title="Quản lý Lịch Dạy">
-            <i class="fa-solid fa-chart-pie"></i>
+            <i class="fa-solid fa-calendar-days"></i>
             <span>Quản lý Lịch Dạy</span>
           </button>
         </li>
         <li>
           <button class="menu-item" onclick="switchTab(this, 'app4', 'https://script.google.com/macros/s/AKfycbwvML7u1lSePpv_cfToSC_5mCcrW1aB8Sh1iekUh4c5GbXq5QNtUp2DRAYDy0yQeIfFGQ/exec')" title="Quản Lý Công Việc">
-            <i class="fa-solid fa-list-check"></i>
+            <i class="fa-solid fa-bars-progress"></i>
             <span>Quản Lý Công Việc</span>
           </button>
         </li>
@@ -450,7 +446,7 @@
       <!-- Footer Sidebar -->
       <div class="sidebar-footer">
         <button class="action-btn" id="sidebarInstallBtn" onclick="installPWA()" style="display: none; color: var(--primary-red); background: var(--primary-red-light); border-color: rgba(211,47,47,0.2);">
-          <i class="fa-solid fa-download"></i>
+          <i class="fa-solid fa-circle-down"></i>
           <span>Cài đặt ứng dụng</span>
         </button>
         <button class="action-btn" onclick="reloadCurrentApp()" title="Làm mới app">
@@ -496,7 +492,6 @@
     let activeAppId = 'app1';
     let activeAppUrl = 'https://script.google.com/macros/s/AKfycbzPYHWYrsi67Y_ccaxWUwyP_Gv1NdWp8fKR7iuWG9ZtIM_tjgqDhX9kOHyl2xaxgM7wLw/exec?view=admin';
 
-    // Đọc trạng thái thu gọn Sidebar đã lưu
     document.addEventListener("DOMContentLoaded", () => {
       const isCollapsed = localStorage.getItem("sidebar_collapsed") === "true";
       if (isCollapsed && window.innerWidth > 768) {
@@ -505,7 +500,6 @@
       }
     });
 
-    // Bật / Thu gọn Sidebar trên Desktop
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
       const toggleIcon = document.getElementById("toggleIcon");
@@ -517,7 +511,6 @@
       localStorage.setItem("sidebar_collapsed", isCollapsed);
     }
 
-    // Quản lý Mobile Sidebar
     function openMobileSidebar() {
       document.getElementById('sidebar').classList.add('open');
       document.getElementById('sidebarOverlay').classList.add('active');
@@ -528,7 +521,6 @@
       document.getElementById('sidebarOverlay').classList.remove('active');
     }
 
-    // Chuyển Tab App
     function switchTab(btnElem, tabId, appUrl) {
       activeAppId = tabId;
       activeAppUrl = appUrl;
@@ -563,16 +555,13 @@
       }
     }
 
-    // ==========================================
-    // KHỞI TẠO TÍNH NĂNG CÀI ĐẶT PWA
-    // ==========================================
+    // PWA INSTALL LOGIC
     let deferredPrompt;
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
       
-      // Hiển thị Banner gợi ý & Nút cài đặt trong Sidebar
       if (localStorage.getItem('pwa_master_banner_dismissed') !== 'true') {
         document.getElementById('pwaInstallBanner').style.display = 'flex';
       }
@@ -597,7 +586,6 @@
       localStorage.setItem('pwa_master_banner_dismissed', 'true');
     }
 
-    // Đăng ký Service Worker vật lý
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
